@@ -1,0 +1,19 @@
+Modèle : SVM (RBF) | augmentation : True | bases : CREMAD, RAVDESS
+
+Par base :
+  RAVDESS  accuracy=0.550  (n=300)
+  CREMAD   accuracy=0.539  (n=1552)
+
+              precision    recall  f1-score   support
+
+       angry      0.660     0.675     0.668       305
+     disgust      0.506     0.430     0.465       305
+     fearful      0.510     0.505     0.507       305
+       happy      0.479     0.485     0.482       305
+     neutral      0.587     0.551     0.568       287
+         sad      0.503     0.626     0.558       305
+   surprised      0.667     0.350     0.459        40
+
+    accuracy                          0.541      1852
+   macro avg      0.559     0.517     0.530      1852
+weighted avg      0.543     0.541     0.539      1852

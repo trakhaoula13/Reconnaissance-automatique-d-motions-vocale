@@ -1,0 +1,21 @@
+microsoft/wavlm-large – milieu 40-80 %, C=0.03
+Bases : RAVDESS=1440, CREMAD=7442
+Test : accuracy=0.746 F1-macro=0.745
+Par base :
+  RAVDESS  accuracy=0.717  (n=300)
+  CREMAD   accuracy=0.751  (n=1552)
+Validation croisée par acteurs RAVDESS (6 plis) : accuracy = 0.776 ± 0.044
+
+              precision    recall  f1-score   support
+
+       angry      0.794     0.849     0.821       305
+     disgust      0.769     0.698     0.732       305
+     fearful      0.655     0.797     0.719       305
+       happy      0.853     0.702     0.770       305
+     neutral      0.824     0.829     0.826       287
+         sad      0.622     0.600     0.611       305
+   surprised      0.705     0.775     0.738        40
+
+    accuracy                          0.746      1852
+   macro avg      0.746     0.750     0.745      1852
+weighted avg      0.751     0.746     0.746      1852

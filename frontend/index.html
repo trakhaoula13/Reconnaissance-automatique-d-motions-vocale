@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reconnaissance automatique des émotions vocales</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="page">
+
+        <header class="head">
+            <svg class="icon icon-lg accent" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>
+    </svg>
+            <div>
+                <h1>Reconnaissance automatique des émotions vocales</h1>
+                <p>Importez un fichier audio ou enregistrez votre voix, puis cliquez sur <b>Analyser</b>.</p>
+            </div>
+        </header>
+
+        <section class="grid">
+            <!-- Colonne gauche : entrée -->
+            <div class="col">
+                <div class="panel">
+                    <h2>Audio</h2>
+
+                    <div id="picker">
+                        <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choisir ou déposer un fichier audio">
+                            <svg class="icon icon-lg" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/>
+          </svg>
+                            <strong>Déposez l'audio ici</strong>
+                            <span>ou cliquez pour choisir un fichier (WAV, MP3, OGG, WebM)</span>
+                            <input id="file" type="file" accept="audio/*" hidden>
+                        </div>
+
+                        <div class="or"><span>ou</span></div>
+
+                        <button id="rec" class="btn btn-ghost" type="button">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6"/></svg>
+          <span id="rec-label">Enregistrer ma voix</span>
+          <span id="rec-time" class="mono"></span>
+        </button>
+                    </div>
+
+                    <div id="player" class="player" hidden>
+                        <div class="player-top">
+                            <span id="file-name" class="file-name"></span>
+                            <div class="pactions">
+                                <button id="download" class="pbtn line small" type="button" aria-label="Télécharger l'audio"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+                                <button id="clear" class="pbtn line small" type="button" aria-label="Retirer l'audio"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+                            </div>
+                        </div>
+                        <canvas id="pwave" class="pwave" height="64" aria-label="Forme d'onde : cliquer pour se déplacer"></canvas>
+                        <div class="ptimes"><span id="cur">0:00</span><span id="dur">0:00</span></div>
+                        <div class="pctl3">
+                            <div class="pside">
+                                <button id="mute" class="pbtn line small" type="button" aria-label="Couper le son"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></button>
+                                <button id="speed" class="speed" type="button" aria-label="Vitesse de lecture">1x</button>
+                            </div>
+                            <div class="pmid">
+                                <button id="back" class="pbtn" type="button" aria-label="Reculer de 2 secondes"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" x2="5" y1="19" y2="5"/></svg></button>
+                                <button id="play" class="pbtn pplay" type="button" aria-label="Lecture / pause"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg></button>
+                                <button id="fwd" class="pbtn" type="button" aria-label="Avancer de 2 secondes"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" x2="19" y1="5" y2="19"/></svg></button>
+                            </div>
+                            <div class="pside end">
+                                <button id="restart" class="pbtn line small" type="button" aria-label="Revenir au début"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
+                            </div>
+                        </div>
+                        <div class="pbar">
+                            <button id="add-file" class="pbtn line accent-btn" type="button" aria-label="Choisir un autre fichier"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg></button>
+                            <button id="add-mic" class="pbtn line" type="button" aria-label="Enregistrer ma voix"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg><span id="add-mic-time" class="mono"></span></button>
+                        </div>
+                        <audio id="audio" preload="auto"></audio>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h2>Modèle</h2>
+                    <div class="seg" role="radiogroup" aria-label="Modèle">
+                        <label><input type="radio" name="model" value="w2v" checked><span>Deep learning (WavLM) – plus précis</span></label>
+                        <label><input type="radio" name="model" value="svm"><span>Classique (MFCC + SVM) – rapide</span></label>
+                    </div>
+                </div>
+
+                <button id="analyze" class="btn btn-main" type="button" disabled>Analyser</button>
+                <p id="error" class="error" role="alert" hidden></p>
+            </div>
+
+            <!-- Colonne droite : résultat -->
+            <div class="col">
+                <div id="result" class="card"></div>
+            </div>
+        </section>
+
+        <section id="signal" class="panel">
+            <h2>Analyse du signal</h2>
+            <canvas id="fig" class="fig" height="500" aria-label="Forme d'onde et spectrogramme Mel"></canvas>
+        </section>
+
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>
